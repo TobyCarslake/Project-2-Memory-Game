@@ -1,35 +1,23 @@
-/*
- * Create a list that holds all of your cards
- */
-//TODO change number of stars to <30 35 >40
+let time = 0; // variable time to 0
+let allCards = document.querySelectorAll('.card'); // variable to store all cards
+let openCards = []; //create array to store the open cards in
+let matchedCardsCount = 0; // create variable to count matched cards
+let moveCounter = 0; // create variable to store the number of moves
+const resetButton = document.querySelector('.fa-repeat'); // set the reset icon to a const
+resetButton.addEventListener('click', reset, false); // add event listener to resetButton const
+let stars = document.querySelectorAll('ul.stars li'); // variable to select the stars to then use to add and remove them
 
 
-//win message if match class = 16
-//remove console.log moveCounter
-//change win condition to 8
-//add timer
-//add time and stars to win message
-//remove the 3rd star remove and 
-//fix win 
 
-
-let time = 0;
+//starts the timer counting up in one second increments
 const timer = setInterval(function() {
     time++;
-    console.log(time);
+    document.querySelector('.timer').textContent = "Time elapsed " + time + " seconds.";
 }, 1000);
-
+//resets the timer back to 0 seconds - this is called from the reset function
 function clearTimer() {
     clearInterval(timer);
 }
-
-let allCards = document.querySelectorAll('.card');
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
 // Shuffle function from https://stackoverflow.com/questions/25175798/how-to-shuffle-a-nodelist
 function shuffle (){
@@ -37,35 +25,6 @@ function shuffle (){
         _e.style.order =  (Math.floor(Math.random() * (16) + 1));
     } );
 }
-
-
-let openCards = []; //create array to store the open cards in
-let matchedCardsCount = 0; // create variable to count matched cards
-
-let arr = [];
-for(var i = allCards.length; i--; arr.unshift(allCards[i]));
-
-let moveCounter = 0; // create variable to store the number of moves
-const resetButton = document.querySelector('.fa-repeat'); // set the reset icon to a const
-
-
-
-
-startGame();
-// function to clear board on run - runs the reset function
-function startGame(){
-    reset();
-    //shuffle();
-}
-
-// add event listener to resetButton const
-resetButton.addEventListener('click', reset, false); 
-
-
-let stars = document.querySelectorAll('ul.stars li');
-//let starsParent = document.querySelectorAll('ul.stars');
-//let starsChild = stars;
-
 
 // reset game function
 // remove classes from all cards which makes them turn over
@@ -82,19 +41,19 @@ function reset() {
 let numStars = document.querySelector('ul.stars').children.length;
     
         if (numStars == 2) {
-            console.log(moveCounter);
             document.querySelector('ul.stars').appendChild(stars[0]);
              
             } else { if (numStars == 1) {
-                console.log(moveCounter);
                 document.querySelector('ul.stars').appendChild(stars[0]);
                 document.querySelector('ul.stars').appendChild(stars[1]);
             }
     
     }
-numStars =3;
-    moveCounter = 0;
-    shuffle();       
+numStars = 3; //sets number of stars displayed to 3
+moveCounter = 0;
+shuffle();
+time = 0;
+setInterval(timer);
 }
 
 // increases moveCounter each time a valid card (does not have classes open, match or show) is clicked and sets html inner text counter to equal moveCounter
@@ -112,33 +71,29 @@ function addMove() {
 }   
 
 
-//function to show message "You win with + 'moveCounter' + " moves! Well Done. Click the reset arrow to play again"
+//function to show win message. 
 function win() {
-    alert("You win with " + moveCounter + " moves and " + document.querySelector('ul.stars').children.length + " STARS!\nWell Done.\nIt took you x time to win.\nClick the reset arrow to play again");
-
+    alert("You win with " + moveCounter + " moves and " + document.querySelector('ul.stars').children.length + " STARS!\nWell Done.\nIt took you " + time + " seconds to win.\nClick the reset arrow to play again");
 }
+
 // function to listen for clicks on cards
 // only lets clicks occur on cards that do not have the classes open, match or show
 // stores the first two clicked cards in openCards array
 // checks if the stored cards in openCards contain equal nodes and if they do, assigns them the match class
+// sets a timer to turn the two cards in openCards back over after .5 seconds
 // removes classes open and show from the cards IF the first two clicked cards (openArray = 2) don't match AND the time lapsed since clicking on the second cards equals one second
 allCards.forEach(function (card) {
     card.addEventListener('click', function (e) {
-       if (matchedCardsCount == 4) {
+       if (matchedCardsCount == 8) {
            win();
-       }
+        }
 
         if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
             addMove();
             openCards.push(card);
-            card.classList.add('open', 'show');
-                       
-            
-            console.log(openCards[0] + openCards[1]);
-            
+            card.classList.add('open', 'show');       
             
             if (openCards[0].lastElementChild.isEqualNode(openCards[1].lastElementChild)) {    
-                console.log("cards match");
                 openCards[0].classList.add('match');
                 openCards[1].classList.add('match');
                 matchedCardsCount ++;
@@ -150,22 +105,12 @@ allCards.forEach(function (card) {
                         card.classList.remove('open', 'show');
                     });
                     openCards = [];
-                }, 1000);
+                }, 500);
             }
         }
         
     });
-    
 });
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
-*/
+// function to clear board on run - runs the reset function
+reset();
