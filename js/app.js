@@ -1,7 +1,7 @@
 let time = 0; // variable time to 0
 let allCards = document.querySelectorAll('.card'); // variable to store all cards
 let openCards = []; //create array to store the open cards in
-let matchedCardsCount = 0; // create variable to count matched cards
+let matchedCardsCount = 0; // create variable to count pairs of matched cards
 let moveCounter = 0; // create variable to store the number of moves
 const resetButton = document.querySelector('.fa-repeat'); // set the reset icon to a const
 resetButton.addEventListener('click', reset, false); // add event listener to resetButton const
@@ -93,12 +93,13 @@ allCards.forEach(function (card) {
             openCards.push(card);
             card.classList.add('open', 'show');       
             
-            if (openCards[0].lastElementChild.isEqualNode(openCards[1].lastElementChild)) {    
-                openCards[0].classList.add('match');
-                openCards[1].classList.add('match');
-                matchedCardsCount ++;
-            }
-            
+                if (openCards.length == 2) {
+                        if (openCards[0].lastElementChild.isEqualNode(openCards[1].lastElementChild)) {    
+                            openCards[0].classList.add('match');
+                            openCards[1].classList.add('match');
+                            matchedCardsCount ++;
+                        }
+                }
             if (openCards.length == 2) {
                 setTimeout(function () {
                     openCards.forEach(function (card) {
