@@ -31,7 +31,7 @@ function shuffle (){
 // changes .moves element inner text to 0 (from the inital html value "3")
 function reset() {
     for (var i=0; i<allCards.length; i++) {
-        allCards[i].classList.remove('open', 'show', 'match');
+        allCards[i].classList.remove('clicked', 'open', 'show', 'match');
     }
     openCards = []; // reset array to no open cards
     matchedCardsCount = 0;
@@ -84,26 +84,30 @@ function win() {
 // removes classes open and show from the cards IF the first two clicked cards (openArray = 2) don't match AND the time lapsed since clicking on the second cards equals one second
 allCards.forEach(function (card) {
     card.addEventListener('click', function (e) {
-       if (matchedCardsCount == 8) {
+       if (matchedCardsCount == 1) {
            win();
         }
-
-        if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
+        if (!card.classList.contains('clicked')) {
             addMove();
+            if (openCards.length <=2){
             openCards.push(card);
-            card.classList.add('open', 'show');       
-            
+            }
+            card.removeEventListener('click', e);
+            console.log(openCards.length);
+            card.classList.add('clicked', 'open', 'show');       
                 if (openCards.length == 2) {
+                    
                         if (openCards[0].lastElementChild.isEqualNode(openCards[1].lastElementChild)) {    
                             openCards[0].classList.add('match');
                             openCards[1].classList.add('match');
                             matchedCardsCount ++;
+
                         }
                 }
             if (openCards.length == 2) {
                 setTimeout(function () {
                     openCards.forEach(function (card) {
-                        card.classList.remove('open', 'show');
+                        card.classList.remove('clicked', 'open', 'show');
                     });
                     openCards = [];
                 }, 500);
