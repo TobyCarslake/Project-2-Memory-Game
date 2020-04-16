@@ -84,7 +84,7 @@ function win() {
 // removes classes open and show from the cards IF the first two clicked cards (openArray = 2) don't match AND the time lapsed since clicking on the second cards equals one second
 allCards.forEach(function (card) {
     card.addEventListener('click', function (e) {
-       if (matchedCardsCount == 1) {
+       if (matchedCardsCount == 8) {
            win();
         }
         if (!card.classList.contains('clicked')) {
