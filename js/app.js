@@ -4,10 +4,8 @@ let openCards = []; //create array to store the open cards in
 let matchedCardsCount = 0; // create variable to count pairs of matched cards
 let moveCounter = 0; // create variable to store the number of moves
 const resetButton = document.querySelector('.fa-repeat'); // set the reset icon to a const
-resetButton.addEventListener('click', reset, false); // add event listener to resetButton const
+resetButton.addEventListener('click', reset, false); // add event listener to resetButton 
 let stars = document.querySelectorAll('ul.stars li'); // variable to select the stars to then use to add and remove them
-
-
 
 //starts the timer counting up in one second increments
 const timer = setInterval(function() {
@@ -27,8 +25,9 @@ function shuffle (){
 }
 
 // reset game function
-// remove classes from all cards which makes them turn over
-// changes .moves element inner text to 0 (from the inital html value "3")
+// remove classes from all cards
+
+//
 function reset() {
     for (var i=0; i<allCards.length; i++) {
         allCards[i].classList.remove('clicked', 'open', 'show', 'match');
@@ -50,10 +49,10 @@ let numStars = document.querySelector('ul.stars').children.length;
     
     }
 numStars = 3; //sets number of stars displayed to 3
-moveCounter = 0;
-shuffle();
-time = 0;
-setInterval(timer);
+moveCounter = 0; // changes .moves element inner text to 0 (from the inital html value "3")
+shuffle(); //calls shuffle function
+time = 0; //sets time to 0
+setInterval(timer); //restarts timer
 }
 
 // increases moveCounter each time a valid card (does not have classes open, match or show) is clicked and sets html inner text counter to equal moveCounter
